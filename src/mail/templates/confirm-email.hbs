@@ -1,0 +1,53 @@
+
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Handlebars Page</title>
+    <style>
+       
+        .email-container{
+            padding : 12px 16px 
+
+        }
+
+        .email-title{
+
+        }
+        .email-action {
+        }
+      
+
+        a{
+            text-decoration: none;
+            color : white;
+            font-weight: 600;
+            padding : 6px 14px;
+            border : none ;
+            background-color: #10726D;
+            cursor: pointer;
+
+        }
+       
+    </style>
+</head>
+<body>
+    <div class="email-container">
+    <div class="email-header">
+        <h2 class="email-title">Welcome {{fullName}}, confirm your email address to get started</h2>
+    </div>
+    <div class="email-content">
+        <p>Once you've confirmed that {{email}} is your email address, We 'll help you create a new account </p>
+             <p>Please tap the button below to confirm </p>
+    </div>
+    <div class="email-action" >
+        
+            <a href="">Confirm Email Address</a> 
+       
+    </div>
+    <div class="email-notice">
+        <p>If you didn't request this email, there's nothing to worry about - you can safely ignore it  </p>
+    </div>
+    </div>
+</body>
+</html>
