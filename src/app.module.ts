@@ -10,6 +10,7 @@ import { MailModule } from './mail/mail.module';
 import { CourseModule } from './course/course.module';
 import { VideoModule } from './video/video.module';
 import { DocumentModule } from './document/document.module';
+import { QuestionAnswerModule } from './question-answer/question-answer.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { DocumentModule } from './document/document.module';
     VideoModule,
     DocumentModule,
     DeviceSessionModule,
+    QuestionAnswerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

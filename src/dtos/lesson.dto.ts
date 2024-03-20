@@ -5,6 +5,8 @@ export class AddLessonDto {
   title: string;
   @ApiProperty()
   chapterId: string;
+  @ApiProperty()
+  courseId: string;
 }
 
 export class GetLessonDto {

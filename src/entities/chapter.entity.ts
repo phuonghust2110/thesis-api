@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { CourseEntity } from './course.entity';
 import { VideoEntity } from './video.entity';
+import { QuestionEntity } from './question.entity';
 
 @Entity('chapter')
 export class ChapterEntity {
@@ -34,4 +35,6 @@ export class ChapterEntity {
 
   @OneToMany(() => VideoEntity, (videos) => videos.chapter)
   videos?: VideoEntity[];
+  @OneToMany(() => QuestionEntity, (questions) => questions.chapter)
+  questions?: QuestionEntity[];
 }

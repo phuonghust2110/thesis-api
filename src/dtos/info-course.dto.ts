@@ -8,3 +8,8 @@ export class InfoCourseDto {
   @ApiProperty()
   description: string;
 }
+
+export class GetCourseByIdDto {
+  @ApiProperty()
+  id: string;
+}

@@ -9,6 +9,7 @@ import { DeviceSessionEntity } from './devicesession.entity';
 import { VideoEntity } from './video.entity';
 import { DocumentEntity } from './document.entity';
 import { CourseEntity } from './course.entity';
+import { Role } from 'src/enum/user.roles';
 
 @Entity('users')
 export class UsersEntity {
@@ -26,6 +27,9 @@ export class UsersEntity {
 
   @Column()
   lastName: string;
+
+  @Column({ type: 'enum', enum: Role, default: Role.STUDENT })
+  role: Role;
 
   @UpdateDateColumn({ name: 'update_at' })
   update_at: Date;

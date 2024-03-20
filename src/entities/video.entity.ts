@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ChapterEntity } from './chapter.entity';
+import { CourseEntity } from './course.entity';
 
 @Entity()
 export class VideoEntity {
@@ -32,4 +33,8 @@ export class VideoEntity {
   @ManyToOne(() => ChapterEntity, (chapter) => chapter.videos)
   @JoinColumn({ name: 'chapter_id' })
   chapter?: ChapterEntity;
+
+  @ManyToOne(() => CourseEntity, (course) => course.videos)
+  @JoinColumn({ name: 'course_id' })
+  course?: CourseEntity;
 }

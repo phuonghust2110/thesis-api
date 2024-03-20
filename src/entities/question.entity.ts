@@ -1,11 +1,13 @@
 import {
   Column,
   Entity,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { AnswerEntity } from './answer.entity';
+import { ChapterEntity } from './chapter.entity';
 
 @Entity('question')
 export class QuestionEntity {
@@ -25,4 +27,6 @@ export class QuestionEntity {
 
   @OneToMany(() => AnswerEntity, (answers) => answers.question)
   answers?: AnswerEntity[];
+  @ManyToOne(() => ChapterEntity, (chapter) => chapter.questions)
+  chapter?: ChapterEntity;
 }

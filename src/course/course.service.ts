@@ -81,8 +81,10 @@ export class CourseService {
   }
 
   async createChapter(chapterName: string, courseId: string) {
-    const chapter = await this.chapterRepo.findOne({ where: { chapterName } });
-    if (chapter) throw new ConflictException();
+    const chapter = await this.chapterRepo.findOne({
+      where: { chapterName, course: { id: courseId } },
+    });
+    if (chapter) throw new ConflictException('Chương này đã tồn tại');
     const course = await this.courseRepo.findOne({ where: { id: courseId } });
     const newChapter = this.chapterRepo.create({
       chapterName,
@@ -106,9 +108,15 @@ export class CourseService {
     const lesson = await this.videoRepo
       .createQueryBuilder('video')
       .leftJoinAndSelect('video.chapter', 'chapter')
+      .leftJoin('video.course', 'course')
       .where('chapter.id =:chapterId', { chapterId })
-      .select(['video.id', 'video.urlFile', 'video.title'])
-      .getMany();
+      .select([
+        'video.id AS id',
+        'video.urlFile AS urlFile',
+        'video.title AS title',
+        'chapter.id AS chapterId',
+      ])
+      .getRawMany();
 
     return lesson;
   }
@@ -123,12 +131,14 @@ export class CourseService {
     return await this.chapterRepo.delete({ id });
   }
 
-  async addLesson(chapterId: string, title: string, file) {
+  async addLesson(chapterId: string, title: string, courseId: string, file) {
     try {
       const chapter = await this.chapterRepo.findOne({
         where: { id: chapterId },
       });
-      if (!chapter) {
+      const course = await this.courseRepo.findOne({ where: { id: courseId } });
+
+      if (!chapter || !course) {
         throw new NotFoundException('Không tìm thấy chương');
       }
       const folderId = this.configService.get('FOLDER_ID');
@@ -146,13 +156,14 @@ export class CourseService {
 
       const fileId = createFile.data.id;
       await this.setPublicFile(fileId);
-      const getUrl = await this.getUrlFile(fileId);
+      const videoUrl = `https://drive.google.com/file/d/${fileId}/preview`;
       const newVideo = this.videoRepo.create({
         title,
         fileId,
         fileName: file.originalname,
-        urlFile: getUrl.data.webViewLink,
+        urlFile: videoUrl,
         chapter,
+        course,
       });
 
       return await this.videoRepo.save(newVideo);
@@ -196,5 +207,9 @@ export class CourseService {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  async getCourseById(id: string): Promise<CourseEntity> {
+    return await this.courseRepo.findOne({ where: { id } });
   }
 }

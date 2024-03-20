@@ -13,7 +13,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { CourseService } from './course.service';
-import { InfoCourseDto } from 'src/dtos/info-course.dto';
+import { GetCourseByIdDto, InfoCourseDto } from 'src/dtos/info-course.dto';
 import { UserId } from 'src/decorators/userid.decorator';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guard/auth.guard';
@@ -87,8 +87,8 @@ export class CourseController {
     return this.courseService.deleteChapter(id);
   }
 
-  @UseGuards(AuthGuard)
-  @ApiBearerAuth()
+  // @UseGuards(AuthGuard)
+  // @ApiBearerAuth()
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({ destination: './lesson' }),
@@ -96,8 +96,8 @@ export class CourseController {
   )
   @Post('add-lesson')
   addLesson(@UploadedFile() file, @Body() addLessonDto: AddLessonDto) {
-    const { title, chapterId } = addLessonDto;
-    return this.courseService.addLesson(chapterId, title, file);
+    const { title, chapterId, courseId } = addLessonDto;
+    return this.courseService.addLesson(chapterId, title, courseId, file);
   }
 
   @Get('get-lesson')
@@ -110,5 +110,10 @@ export class CourseController {
   @Get('get-all-course')
   getAllCourse() {
     return this.courseService.getAllCourse();
+  }
+
+  @Get('getCourseById')
+  async getCourseById(@Query() { id }: GetCourseByIdDto) {
+    return this.courseService.getCourseById(id);
   }
 }
